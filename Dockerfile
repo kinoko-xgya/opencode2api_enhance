@@ -36,10 +36,7 @@ RUN set -eux; \
     tar xzf /tmp/sb.tar.gz -C /tmp; \
     cp "/tmp/sing-box-${SINGBOX_VERSION}-linux-${SB_ARCH}/sing-box" /out/bin/sing-box; \
     chmod +x /out/bin/sing-box; \
-    file /out/bin/sing-box || true; \
-    head -c 20 /out/bin/sing-box | od -c | head -2; \
-    /out/bin/sing-box version 2>&1 || echo "RUNFAILED"; \
-    ldd /out/bin/sing-box 2>&1 | head -5
+    /out/bin/sing-box version
 
 # ---------- 阶段 3：运行（精简） ----------
 FROM alpine:3.20
