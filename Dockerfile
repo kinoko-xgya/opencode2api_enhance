@@ -33,10 +33,8 @@ RUN set -eux; \
     go build -trimpath -ldflags "-s -w" -o /out/opencode2api .; \
     cp -r dist /out/dist; \
     wget --tries=5 --timeout=60 --waitretry=5 -O /tmp/sb.tar.gz "https://github.com/SagerNet/sing-box/releases/download/v${SINGBOX_VERSION}/sing-box-${SINGBOX_VERSION}-linux-${SB_ARCH}.tar.gz"; \
-    tar tzf /tmp/sb.tar.gz | head; \
     tar xzf /tmp/sb.tar.gz -C /tmp; \
-    find /tmp -maxdepth 3 -name 'sing-box*' -ls; \
-    cp /tmp/sing-box-${SINGBOX_VERSION}-linux-${SB_ARCH}/sing-box /out/bin/sing-box; \
+    cp "/tmp/sing-box-${SINGBOX_VERSION}-linux-${SB_ARCH}/sing-box" /out/bin/sing-box; \
     chmod +x /out/bin/sing-box; \
     /out/bin/sing-box version
 
@@ -51,6 +49,7 @@ WORKDIR /app
 COPY --from=build /out/opencode2api /app/bin/opencode2api
 COPY --from=build /out/bin /app/bin
 COPY --from=build /out/dist /app/dist
+RUN /app/bin/sing-box version
 ENV OPCODE2API_DATA_DIR=/data
 EXPOSE 40000 40080
 VOLUME ["/data"]
