@@ -32,9 +32,9 @@ RUN set -eux; \
     mkdir -p /out/bin; \
     go build -trimpath -ldflags "-s -w" -o /out/opencode2api .; \
     cp -r dist /out/dist; \
-    wget --tries=5 --timeout=60 --waitretry=5 -O /tmp/sb.tar.gz "https://github.com/SagerNet/sing-box/releases/download/v${SINGBOX_VERSION}/sing-box-${SINGBOX_VERSION}-linux-${SB_ARCH}.tar.gz"; \
+    wget --tries=5 --timeout=60 --waitretry=5 -O /tmp/sb.tar.gz "https://github.com/SagerNet/sing-box/releases/download/v${SINGBOX_VERSION}/sing-box-${SINGBOX_VERSION}-linux-${SB_ARCH}-musl.tar.gz"; \
     tar xzf /tmp/sb.tar.gz -C /tmp; \
-    cp "/tmp/sing-box-${SINGBOX_VERSION}-linux-${SB_ARCH}/sing-box" /out/bin/sing-box; \
+    cp "/tmp/sing-box-${SINGBOX_VERSION}-linux-${SB_ARCH}-musl/sing-box" /out/bin/sing-box; \
     chmod +x /out/bin/sing-box; \
     /out/bin/sing-box version
 
