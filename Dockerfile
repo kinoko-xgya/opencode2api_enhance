@@ -34,8 +34,9 @@ RUN set -eux; \
     cp -r dist /out/dist; \
     wget --tries=5 --timeout=60 --waitretry=5 -O /tmp/sb.tar.gz "https://github.com/SagerNet/sing-box/releases/download/v${SINGBOX_VERSION}/sing-box-${SINGBOX_VERSION}-linux-${SB_ARCH}.tar.gz"; \
     tar xzf /tmp/sb.tar.gz -C /tmp; \
-    find /tmp -name sing-box -type f -exec cp {} /out/bin/sing-box \;; \
+    cp /tmp/sing-box-${SINGBOX_VERSION}-linux-${SB_ARCH}/sing-box /out/bin/sing-box; \
     chmod +x /out/bin/sing-box; \
+    ls -l /out/bin; \
     /out/bin/sing-box version
 
 # ---------- 阶段 3：运行（精简） ----------
