@@ -33,10 +33,11 @@ RUN set -eux; \
     go build -trimpath -ldflags "-s -w" -o /out/opencode2api .; \
     cp -r dist /out/dist; \
     wget --tries=5 --timeout=60 --waitretry=5 -O /tmp/sb.tar.gz "https://github.com/SagerNet/sing-box/releases/download/v${SINGBOX_VERSION}/sing-box-${SINGBOX_VERSION}-linux-${SB_ARCH}.tar.gz"; \
+    tar tzf /tmp/sb.tar.gz | head; \
     tar xzf /tmp/sb.tar.gz -C /tmp; \
+    find /tmp -maxdepth 3 -name 'sing-box*' -ls; \
     cp /tmp/sing-box-${SINGBOX_VERSION}-linux-${SB_ARCH}/sing-box /out/bin/sing-box; \
     chmod +x /out/bin/sing-box; \
-    ls -l /out/bin; \
     /out/bin/sing-box version
 
 # ---------- 阶段 3：运行（精简） ----------
