@@ -24,18 +24,18 @@ COPY *.go ./
 COPY --from=frontend /src/dist ./dist
 ARG TARGETARCH
 ARG SINGBOX_VERSION=1.13.16
-RUN case "${TARGETARCH}" in \
+RUN set -eux; \
+    case "${TARGETARCH}" in \
       amd64|arm64) SB_ARCH="${TARGETARCH}" ;; \
       *) echo "unsupported TARGETARCH: ${TARGETARCH}" >&2; exit 1 ;; \
-    esac && \
-    mkdir -p /out/bin && \
-    go build -trimpath -ldflags "-s -w" -o /out/opencode2api . && \
-    cp -r dist /out/dist && \
-    cd /tmp && \
-    wget --tries=5 --timeout=60 --waitretry=5 -O sb.tar.gz "https://github.com/SagerNet/sing-box/releases/download/v${SINGBOX_VERSION}/sing-box-${SINGBOX_VERSION}-linux-${SB_ARCH}.tar.gz" && \
-    tar xzf sb.tar.gz && \
-    find /tmp -name sing-box -type f -exec cp {} /out/bin/sing-box \; && \
-    chmod +x /out/bin/sing-box && \
+    esac; \
+    mkdir -p /out/bin; \
+    go build -trimpath -ldflags "-s -w" -o /out/opencode2api .; \
+    cp -r dist /out/dist; \
+    wget --tries=5 --timeout=60 --waitretry=5 -O /tmp/sb.tar.gz "https://github.com/SagerNet/sing-box/releases/download/v${SINGBOX_VERSION}/sing-box-${SINGBOX_VERSION}-linux-${SB_ARCH}.tar.gz"; \
+    tar xzf /tmp/sb.tar.gz -C /tmp; \
+    find /tmp -name sing-box -type f -exec cp {} /out/bin/sing-box \;; \
+    chmod +x /out/bin/sing-box; \
     /out/bin/sing-box version
 
 # ---------- 阶段 3：运行（精简） ----------
